@@ -63,7 +63,7 @@ function menuClass(to: string) {
             <span class="material-symbols-outlined">person</span>
           </div>
           <div class="flex flex-col ms-3">
-            <span class="text-xs text-indigo-600 mb-1">Selamat datang,</span>
+            <span class="text-xs text-indigo-600 mb-1">Selamat datang</span>
             <span class="text-sm">{{ app.user?.name ?? 'User' }}</span>
           </div>
         </div>
@@ -74,7 +74,7 @@ function menuClass(to: string) {
           </RouterLink>
         </div>
       </div>
-      <main>
+      <main class="flex flex-col flex-1 overflow-y-auto">
         <RouterView />
       </main>
     </div>
