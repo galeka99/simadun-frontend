@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import Role from '@/enums/role'
 import { useAppStore } from '@/stores/app'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { RouterView, RouterLink, useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -10,16 +11,6 @@ const menus = ref([
     title: 'Dashboard',
     to: '/dashboard',
     icon: 'home',
-  },
-  {
-    title: 'Ruangan',
-    to: '/dashboard/room',
-    icon: 'door_open',
-  },
-  {
-    title: 'User',
-    to: '/dashboard/user',
-    icon: 'groups',
   },
   {
     title: 'Ubah Kata Sandi',
@@ -32,6 +23,21 @@ const menus = ref([
     icon: 'logout',
   },
 ])
+
+onMounted(() => {
+  if (app.user?.role === Role.ADMIN) {
+    menus.value.splice(1, 0, ...[{
+      title: 'Ruangan',
+      to: '/dashboard/room',
+      icon: 'door_open',
+    },
+    {
+      title: 'User',
+      to: '/dashboard/user',
+      icon: 'groups',
+    }])
+  }
+})
 
 function menuClass(to: string) {
   const currentRoute = router.currentRoute.value.path

@@ -1,7 +1,4 @@
-enum Role {
-  ADMIN = 1,
-  USER = 2,
-}
+import Role from '@/enums/role'
 
 export interface User {
   id: number

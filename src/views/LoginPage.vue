@@ -49,11 +49,11 @@ async function login() {
       <div class="divider my-5"></div>
       <div class="flex flex-col md:flex-row md:items-center mb-3">
         <label for="username" class="mb-1 md:w-4/12">Username</label>
-        <CustomInput id="username" type="text" class="md:w-8/12" v-model="data.username" />
+        <CustomInput id="username" type="text" class="md:w-8/12" v-model="data.username" autofocus @enter="login" />
       </div>
       <div class="flex flex-col md:flex-row md:items-center mb-5">
         <label for="password" class="mb-1 md:w-4/12">Kata Sandi</label>
-        <CustomInput id="password" type="password" class="md:w-8/12" v-model="data.password" />
+        <CustomInput id="password" type="password" class="md:w-8/12" v-model="data.password" @enter="login" />
       </div>
       <CustomButton text="Masuk" :loading="loading" @click="login" />
     </div>
