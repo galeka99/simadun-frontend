@@ -68,14 +68,14 @@ function menuClass(to: string) {
           </div>
         </div>
         <div class="flex flex-col gap-y-3 p-3 text-gray-600">
-          <RouterLink v-for="(menu, i) in menus" :key="`menu-${i}`" :to="menu.to" :class="menuClass(menu.to)">
+          <router-link v-for="(menu, i) in menus" :key="`menu-${i}`" :to="menu.to" :class="menuClass(menu.to)">
             <span class="material-symbols-outlined">{{ menu.icon }}</span>
             <span class="ms-2">{{ menu.title }}</span>
-          </RouterLink>
+          </router-link>
         </div>
       </div>
       <main class="flex flex-col flex-1 overflow-y-auto">
-        <RouterView />
+        <router-view />
       </main>
     </div>
   </div>

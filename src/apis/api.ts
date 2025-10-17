@@ -40,7 +40,7 @@ const Api = {
       }
       if (auth) {
         const token = localStorage.getItem('token') ?? ''
-        headers.Authroization = `Bearer ${token}`
+        headers.Authorization = `Bearer ${token}`
       }
 
       const response = await client({
@@ -65,13 +65,12 @@ const Api = {
 
   put: async function (path: string, data: object, auth?: boolean) {
     try {
-      const headers = {
+      const headers: any = {
         'Content-Type': 'application/json',
-        'Authroization': '',
       }
       if (auth) {
         const token = localStorage.getItem('token') ?? ''
-        headers.Authroization = `Bearer ${token}`
+        headers.Authorization = `Bearer ${token}`
       }
 
       const response = await client({
@@ -79,6 +78,33 @@ const Api = {
         url: path,
         headers,
         data,
+      })
+
+      return response.data
+    } catch (e) {
+      let msg = 'Terjadi kesalahan saat terhubung ke server'
+
+      if (e instanceof AxiosError) {
+        msg = e.response?.data?.message ?? 'Terjadi kesalahan saat terhubung ke server'
+      }
+
+      Toast.error(msg)
+      throw e
+    }
+  },
+
+  delete: async function (path: string, auth?: boolean) {
+    try {
+      const headers: any = {}
+      if (auth) {
+        const token = localStorage.getItem('token') ?? ''
+        headers.Authorization = `Bearer ${token}`
+      }
+
+      const response = await client({
+        method: 'DELETE',
+        url: path,
+        headers,
       })
 
       return response.data
