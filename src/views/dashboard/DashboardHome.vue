@@ -148,6 +148,27 @@ async function getAgendas() {
   })
 }
 
+function newAgenda() {
+  agenda.value = {
+    id: null,
+    roomId: 0,
+    date: moment().format('YYYY-MM-DD'),
+    startHour: 8,
+    endHour: 12,
+    description: '',
+    participantTotal: 0,
+    contactName: null,
+    contactPhone: null,
+    paid: true,
+    user: {
+      id: 0,
+      name: '',
+    }
+  }
+  showDetailModal.value = false
+  showAddModal.value = false
+}
+
 async function createAgenda() {
   if (agenda.value.description.trim().length === 0) {
     return Toast.error('Deskripsi kegiatan harus diisi')
@@ -323,7 +344,7 @@ onMounted(() => {
         </select>
       </div>
       <div class="flex flex-col md:flex-row md:w-1/2 md:items-center md:justify-end gap-3">
-        <custom-button @click="showAddModal = true" type="success" text="Tambah Agenda Baru" class="w-full md:w-auto" />
+        <custom-button @click="newAgenda" type="success" text="Tambah Agenda Baru" class="w-full md:w-auto" />
       </div>
     </div>
     <div class="flex flex-col bg-white rounded-lg shadow-lg mx-5 p-5">
@@ -333,7 +354,7 @@ onMounted(() => {
       <div class="flex flex-col gap-y-2 md:flex-row md:items-center md:gap-x-3 w-full mb-3">
         <span class="text-sm text-gray-500 w-full md:w-4/12">Tanggal</span>
         <span class="text-gray-800 font-semibold w-full md:w-8/12">{{ moment(agenda.date).format('DD MMM yyyy')
-          }}</span>
+        }}</span>
       </div>
       <div class="flex flex-col gap-y-2 md:flex-row md:items-center md:gap-x-3 w-full mb-3">
         <span class="text-sm text-gray-500 w-full md:w-4/12">Waktu</span>
