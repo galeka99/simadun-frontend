@@ -6,6 +6,7 @@ import { RouterView, RouterLink, useRouter } from 'vue-router'
 
 const router = useRouter()
 const app = useAppStore()
+const showMenu = ref(false)
 const menus = ref([
   {
     title: 'Dashboard',
@@ -48,13 +49,23 @@ function menuClass(to: string) {
     return 'flex flex-row items-center hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-all py-3 px-5'
   }
 }
+
+function goToMenu(to: string) {
+  showMenu.value = false
+  router.push(to)
+}
 </script>
 
 <template>
   <div class="flex flex-col w-screen h-screen bg-indigo-50 overflow-hidden">
-    <nav class="flex flex-row bg-indigo-500 text-white w-full h-14 py-2 px-5">
-      <img src="@/assets/images/kota_semarang.png" alt="logo kota semarang" class="h-10 w-auto" />
-      <span class="ms-3 text-2xl font-bold self-center">SiMaDun</span>
+    <nav class="flex flex-row bg-indigo-500 text-white w-full h-14">
+      <button @click="showMenu = true" class="flex md:hidden flex-col justify-center items-center bg-white/10 w-14 h-14 p-3 me-3">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <div class="flex flex-row items-center py-2 px-0 md:px-5">
+        <img src="@/assets/images/kota_semarang.png" alt="logo kota semarang" class="h-10 w-auto" />
+        <span class="ms-3 text-2xl font-bold self-center">SiMaDun</span>
+      </div>
     </nav>
     <div class="flex flex-row h-full">
       <div class="hidden md:flex flex-col w-4/12 lg:w-3/12 xl:w-2/12 h-full bg-white shadow-lg">
@@ -77,6 +88,32 @@ function menuClass(to: string) {
       <main class="flex flex-col flex-1 overflow-y-auto">
         <router-view />
       </main>
+    </div>
+    <div v-if="showMenu" id="menubar" class="flex flex-col fixed top-0 left-0 right-0 bottom-0 z-[10] bg-white">
+      <nav class="flex flex-row bg-indigo-500 text-white w-full h-14">
+        <button @click="showMenu = false" class="flex md:hidden flex-col justify-center items-center bg-white/10 w-14 h-14 p-3 me-3">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+        <div class="flex flex-row items-center py-2 px-0 md:px-5">
+          <img src="@/assets/images/kota_semarang.png" alt="logo kota semarang" class="h-10 w-auto" />
+          <span class="ms-3 text-2xl font-bold self-center">SiMaDun</span>
+        </div>
+      </nav>
+      <div class="flex flex-row bg-gray-200 w-full shadow p-3">
+          <div class="flex justify-center items-center bg-white rounded-full w-10 h-10">
+            <span class="material-symbols-outlined">person</span>
+          </div>
+          <div class="flex flex-col ms-3">
+            <span class="text-xs text-indigo-600 mb-1">Selamat datang</span>
+            <span class="text-sm">{{ app.user?.name ?? 'User' }}</span>
+          </div>
+        </div>
+        <div class="flex flex-col gap-y-3 p-3 text-gray-600">
+          <button v-for="(menu, i) in menus" :key="`menu-${i}`" :class="menuClass(menu.to)" @click="goToMenu(menu.to)">
+            <span class="material-symbols-outlined">{{ menu.icon }}</span>
+            <span class="ms-2">{{ menu.title }}</span>
+          </button>
+        </div>
     </div>
   </div>
 </template>
