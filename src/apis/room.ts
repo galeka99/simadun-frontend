@@ -20,6 +20,12 @@ const RoomApi = {
     return result.data
   },
 
+  public: async function (unitId: number) {
+    const result = await Api.get(`/v1/room/public?unitId=${unitId}`)
+
+    return result.data
+  },
+
   list: async function (page?: number, limit?: number) {
     const result = await Api.get(`/v1/room?limit=${limit ?? 25}&page=${page ?? 1}`, true)
 

@@ -34,6 +34,15 @@ interface UpdateAgendaBody {
 }
 
 const AgendaApi = {
+  public: async function (params: AllAgendaParams): Promise<Agenda[]> {
+    const { roomId, startDate, endDate } = params
+    const result = await Api.get(
+      `/v1/agenda/public?roomId=${roomId}&startDate=${startDate}&endDate=${endDate}`,
+    )
+
+    return result.data
+  },
+
   list: async function (params: AllAgendaParams): Promise<Agenda[]> {
     const { roomId, startDate, endDate } = params
     const result = await Api.get(

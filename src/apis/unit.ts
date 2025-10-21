@@ -3,7 +3,7 @@ import Api from '@/apis/api'
 
 const UnitApi = {
   all: async function (): Promise<Unit[]> {
-    const response = await Api.get('/v1/unit/all', true)
+    const response = await Api.get('/v1/unit/all')
 
     return response.data
   },

@@ -2,7 +2,7 @@
 import RoomApi from '@/apis/room'
 import Toast from '@/helpers/toast'
 import type { Room } from '@/models/room'
-import type { CalendarOptions, DatesSetArg, EventClickArg } from '@fullcalendar/core'
+import type { CalendarOptions, DatesSetArg, EventClickArg, EventContentArg } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/vue3'
 import moment from 'moment'
 import { onMounted, ref } from 'vue'
@@ -42,7 +42,13 @@ const calendarOptions = ref<CalendarOptions>({
   },
   datesSet: onDatesSet,
   eventClick: onClickEvent,
-  eventClassNames: 'cursor-pointer',
+  eventClassNames: 'flex flex-col items-center bg-indigo-50 text-indigo-600 font-bold cursor-pointer',
+  eventContent: (arg: EventContentArg) => {
+    const startTime = moment(arg.event.start).format('HH:mm')
+    const endTime = moment(arg.event.end).format('HH:mm')
+
+    return `${startTime} - ${endTime}`
+  },
   events: []
 })
 const startDate = ref<string>(moment().format('YYYY-MM-DD'))
@@ -166,7 +172,7 @@ function newAgenda() {
     }
   }
   showDetailModal.value = false
-  showAddModal.value = false
+  showAddModal.value = true
 }
 
 async function createAgenda() {
