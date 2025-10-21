@@ -199,8 +199,8 @@ onMounted(() => {
             <td>{{ (datas.page - 1) * datas.perPage + i + 1 }}</td>
             <td>{{ room.name }}</td>
             <td>
-              <span v-if="room.isPublic" class="bg-green-600 text-white text-xs uppercase font-bold py-1 px-2 rounded">Untuk Umum</span>
-              <span v-if="!room.isPublic" class="bg-amber-600 text-white text-xs uppercase font-bold py-1 px-2 rounded">Hanya Internal</span>
+              <span v-if="room.isPublic" class="bg-green-600 text-white text-xs uppercase font-bold py-1 px-2 rounded">Umum</span>
+              <span v-if="!room.isPublic" class="bg-amber-600 text-white text-xs uppercase font-bold py-1 px-2 rounded">Internal</span>
             </td>
             <td>{{ room.unit.name }}</td>
             <td class="flex flex-col md:flex-row md:justify-center gap-1">

@@ -9,8 +9,6 @@ import { onMounted, ref } from 'vue'
 import CustomButton from '@/components/CustomButton.vue'
 import CustomModal from '@/components/CustomModal.vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import listPlugin from '@fullcalendar/list'
 import type { Agenda } from '@/models/agenda'
 import AgendaApi from '@/apis/agenda'
 import { useAppStore } from '@/stores/app'
@@ -25,29 +23,18 @@ const calendarOptions = ref<CalendarOptions>({
   nowIndicator: true,
   plugins: [
     dayGridPlugin,
-    timeGridPlugin,
-    listPlugin,
   ],
-  headerToolbar: {
-    left: 'dayGridMonth,dayGridWeek,timeGrid,list',
-    center: 'title',
-    right: 'prev,today,next',
-  },
   buttonText: {
-    month: 'Bulanan',
-    week: 'Mingguan',
-    timeGrid: 'Harian',
-    list: 'Agenda',
     today: 'Hari Ini',
   },
   datesSet: onDatesSet,
   eventClick: onClickEvent,
-  eventClassNames: 'flex flex-col items-center bg-indigo-50 text-indigo-600 font-bold cursor-pointer',
+  eventClassNames: 'bg-indigo-50 text-indigo-600 font-bold cursor-pointer overflow-hidden text-ellipsis',
   eventContent: (arg: EventContentArg) => {
     const startTime = moment(arg.event.start).format('HH:mm')
     const endTime = moment(arg.event.end).format('HH:mm')
 
-    return `${startTime} - ${endTime}`
+    return `[${startTime} - ${endTime}] ${arg.event.title}`
   },
   events: []
 })
