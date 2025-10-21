@@ -9,8 +9,6 @@ import { RouterLink } from 'vue-router'
 import type { CalendarOptions, DatesSetArg, EventContentArg } from '@fullcalendar/core'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
-import timeGridPlugin from '@fullcalendar/timegrid'
-import listPlugin from '@fullcalendar/list'
 import moment from 'moment'
 import AgendaApi from '@/apis/agenda'
 
