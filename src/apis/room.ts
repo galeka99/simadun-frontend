@@ -14,6 +14,12 @@ interface UpdateRoomParam {
 }
 
 const RoomApi = {
+  all: async function () {
+    const result = await Api.get('/v1/room/all', true)
+
+    return result.data
+  },
+
   list: async function (page?: number, limit?: number) {
     const result = await Api.get(`/v1/room?limit=${limit ?? 25}&page=${page ?? 1}`, true)
 
@@ -42,7 +48,7 @@ const RoomApi = {
     await Api.delete(`/v1/room/${id}`, true)
 
     return true
-  }
+  },
 }
 
 export default RoomApi
