@@ -3,7 +3,7 @@ import CustomInput from '@/components/CustomInput.vue'
 import CustomButton from '@/components/CustomButton.vue'
 import { ref } from 'vue'
 import AuthApi from '@/apis/auth'
-import { useRouter } from 'vue-router'
+import { useRouter, RouterLink } from 'vue-router'
 import Toast from '@/helpers/toast'
 
 const data = ref({
@@ -38,7 +38,8 @@ async function login() {
 
 <template>
   <main class="flex flex-col w-screen min-h-screen justify-center items-center bg-indigo-50 p-5">
-    <div class="flex flex-col bg-white border border-gray-300 rounded-md shadow-lg p-5 w-full sm:w-10/12 md:w-8/12 lg:w-5/12 xl:w-4/12">
+    <div
+      class="flex flex-col bg-white border border-gray-300 rounded-md shadow-lg p-5 w-full sm:w-10/12 md:w-8/12 lg:w-5/12 xl:w-4/12">
       <div class="flex flex-col md:flex-row justify-center items-center">
         <img src="@/assets/images/kota_semarang.png" alt="logo kota semarang" class="w-10 h-auto mb-3 md:mb-0">
         <div class="flex flex-col items-center w-full text-center mx-0 md:mx-3">
@@ -56,6 +57,11 @@ async function login() {
         <CustomInput id="password" type="password" class="md:w-8/12" v-model="data.password" @enter="login" />
       </div>
       <CustomButton text="Masuk" :loading="loading" @click="login" />
+      <router-link to="/"
+        class="self-center text-center text-sm text-indigo-400 hover:text-indigo-600 focus:text-indigo-700 mt-7">←
+        kembali
+        ke
+        beranda</router-link>
     </div>
   </main>
 </template>
