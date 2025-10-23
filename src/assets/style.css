@@ -62,7 +62,7 @@
   }
 
   .table > tbody > tr {
-    @apply divide-x divide-gray-300;
+    @apply divide-x divide-gray-300 hover:bg-gray-100;
   }
 
   .table > tbody > tr > td {

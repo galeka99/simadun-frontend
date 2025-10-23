@@ -44,6 +44,7 @@ const endDate = ref<string>(moment().format('YYYY-MM-DD'))
 const rooms = ref<Room[]>([])
 const roomId = ref(0)
 const agendas = ref<Agenda[]>([])
+const todayAgendas = ref<Agenda[]>([])
 const agenda = ref<{
   id: number | null
   roomId: number
@@ -88,6 +89,23 @@ async function getRooms() {
   }
 }
 
+function showAgenda(data: Agenda) {
+  agenda.value = {
+    id: data.id,
+    date: moment(data.date).format('YYYY-MM-DD'),
+    startHour: data.startHour,
+    endHour: data.endHour,
+    description: data.description,
+    participantTotal: data.participantTotal,
+    contactName: data.contactName,
+    contactPhone: data.contactPhone,
+    paid: data.paid,
+    roomId: data.roomId,
+    user: data.user,
+  }
+  showDetailModal.value = true
+}
+
 function onClickEvent(arg: EventClickArg) {
   const id = parseInt(arg.event.id)
   const foundAgenda = agendas.value.find(el => el.id === id)
@@ -95,20 +113,7 @@ function onClickEvent(arg: EventClickArg) {
     return Toast.error('Agenda tidak ditemukan')
   }
 
-  agenda.value = {
-    id: foundAgenda.id,
-    date: moment(foundAgenda.date).format('YYYY-MM-DD'),
-    startHour: foundAgenda.startHour,
-    endHour: foundAgenda.endHour,
-    description: foundAgenda.description,
-    participantTotal: foundAgenda.participantTotal,
-    contactName: foundAgenda.contactName,
-    contactPhone: foundAgenda.contactPhone,
-    paid: foundAgenda.paid,
-    roomId: foundAgenda.roomId,
-    user: foundAgenda.user,
-  }
-  showDetailModal.value = true
+  showAgenda(foundAgenda)
 }
 
 function onDatesSet(arg: DatesSetArg) {
@@ -121,16 +126,23 @@ function onDatesSet(arg: DatesSetArg) {
 async function getAgendas() {
   if (!roomId.value || roomId.value === 0) return
 
-  const response = await AgendaApi.list({
+  // Set today agendas
+  const todayResponse: Agenda[] = await AgendaApi.list({
+    roomId: roomId.value,
+    startDate: moment().format('YYYY-MM-DD'),
+    endDate: moment().format('YYYY-MM-DD'),
+  })
+  todayAgendas.value = todayResponse.sort((a, b) => a.startHour - b.startHour)
+
+  // Set selected date-range agendas
+  agendas.value = await AgendaApi.list({
     roomId: roomId.value,
     startDate: startDate.value,
     endDate: endDate.value,
   })
 
-  agendas.value = response
-
-  // Reformat agenda to calendar event
-  calendarOptions.value.events = response.map(agenda => {
+  // Mapping date-range agendas to calendar view
+  calendarOptions.value.events = agendas.value.map(agenda => {
     return {
       id: agenda.id.toString(),
       date: moment(agenda.date).format('YYYY-MM-DD'),
@@ -338,6 +350,42 @@ onMounted(() => {
       </div>
       <div class="flex flex-col md:flex-row md:w-1/2 md:items-center md:justify-end gap-3">
         <custom-button @click="newAgenda" type="success" text="Tambah Agenda Baru" class="w-full md:w-auto" />
+      </div>
+    </div>
+    <div class="flex flex-col bg-white rounded-lg shadow-lg mx-5 p-5">
+      <span class="text-lg font-semibold text-indigo-600">Agenda Hari Ini</span>
+      <div class="divider my-3"></div>
+      <div class="flex flex-col w-full overflow-x-auto">
+        <table class="table text-center">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Waktu</th>
+              <th>Deskripsi Kegiatan</th>
+              <th>Jumlah Peserta</th>
+              <th>Nama Kontak</th>
+              <th>Nomor Kontak</th>
+            </tr>
+          </thead>
+          <tbody v-if="todayAgendas.length > 0">
+            <tr v-for="(agenda, i) in todayAgendas" :key="`todayAgenda-${i}`" class="cursor-pointer"
+              @click="showAgenda(agenda)">
+              <td>{{ i + 1 }}</td>
+              <td>{{ agenda.startHour.toString().padStart(2, '0') }}:00 - {{ agenda.endHour.toString().padStart(2, '0')
+              }}:00
+              </td>
+              <td>{{ agenda.description }}</td>
+              <td>{{ agenda.participantTotal }} orang</td>
+              <td>{{ agenda.contactName }}</td>
+              <td>{{ agenda.contactPhone }}</td>
+            </tr>
+          </tbody>
+          <tbody v-if="todayAgendas.length === 0">
+            <tr class="bg-gray-100">
+              <td colspan="6" class="text-gray-600 text-sm uppercase">Belum Ada Agenda Hari Ini</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="flex flex-col bg-white rounded-lg shadow-lg mx-5 p-5">
