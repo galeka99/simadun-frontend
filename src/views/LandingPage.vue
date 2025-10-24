@@ -61,6 +61,8 @@ const calendarOptions = ref<CalendarOptions>({
 })
 
 async function onChangeUnit() {
+  calendarOptions.value.events = []
+
   await getRooms()
   roomId.value = 0
 
